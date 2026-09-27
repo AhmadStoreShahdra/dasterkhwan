@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dasterkhwan | دسترخوان</title>
+  <meta name="description" content="Dasterkhwan — traditional Pakistani food, made fresh every day.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#home" class="logo">
+        <span class="logo-en">Dasterkhwan</span>
+        <span class="logo-ur">دسترخوان</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" data-i18n="nav_home">Home</a>
+        <a href="#menu" data-i18n="nav_menu">Menu</a>
+        <a href="#about" data-i18n="nav_about">About</a>
+        <a href="#contact" data-i18n="nav_contact">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="lang-btn" id="langBtn" aria-label="Switch language">اردو</button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="container hero-inner">
+      <p class="eyebrow" data-i18n="hero_eyebrow">Traditional Pakistani Food</p>
+      <h1 data-i18n="hero_title">Food that brings the family together</h1>
+      <p class="hero-text" data-i18n="hero_text">Fresh karahi, biryani, BBQ and naan — cooked daily with desi ghee and homemade masalas.</p>
+      <div class="hero-buttons">
+        <a href="#menu" class="btn btn-primary" data-i18n="hero_cta_menu">View Menu</a>
+        <a href="#contact" class="btn btn-outline" data-i18n="hero_cta_order">Order Now</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="menu">
+    <div class="container">
+      <h2 class="section-title" data-i18n="menu_title">Our Menu</h2>
+      <p class="section-sub" data-i18n="menu_sub">Prices in Pakistani Rupees</p>
+      <div class="tabs" id="menuTabs"></div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="about">
+    <div class="container about-grid">
+      <div>
+        <h2 class="section-title left" data-i18n="about_title">About Us</h2>
+        <p data-i18n="about_text">Dasterkhwan is a family restaurant serving the real taste of Pakistan. Every dish is made fresh in our kitchen, the way our elders taught us.</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <span class="feature-icon">🔥</span>
+          <h3 data-i18n="f1_title">Fresh Daily</h3>
+          <p data-i18n="f1_text">Cooked fresh every day</p>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">🧂</span>
+          <h3 data-i18n="f2_title">Homemade Masala</h3>
+          <p data-i18n="f2_text">Our own spice blends</p>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">👨‍👩‍👧</span>
+          <h3 data-i18n="f3_title">Family Seating</h3>
+          <p data-i18n="f3_text">Comfortable space for families</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container contact-grid">
+      <div>
+        <h2 class="section-title left" data-i18n="contact_title">Visit or Order</h2>
+        <ul class="contact-list">
+          <li><strong data-i18n="c_address">Address</strong><span data-i18n="c_address_val">Shahdara, Lahore</span></li>
+          <li><strong data-i18n="c_phone">Phone</strong><a href="tel:+923000000000" dir="ltr">+92 300 0000000</a></li>
+          <li><strong data-i18n="c_hours">Hours</strong><span data-i18n="c_hours_val">Daily: 12:00 PM – 12:00 AM</span></li>
+        </ul>
+        <a class="btn btn-whatsapp" id="whatsappBtn" href="https://wa.me/923000000000" target="_blank" rel="noopener" data-i18n="c_whatsapp">Order on WhatsApp</a>
+      </div>
+      <div class="map-box">
+        <iframe title="Map" loading="lazy"
+          src="https://maps.google.com/maps?q=Shahdara%20Lahore&z=14&output=embed"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© <span id="year"></span> Dasterkhwan · <span data-i18n="footer">All rights reserved</span></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
