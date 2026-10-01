@@ -1,107 +1,256 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ur" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dasterkhwan | دسترخوان</title>
-  <meta name="description" content="Dasterkhwan — traditional Pakistani food, made fresh every day.">
+  <title>دسترخوان | Dasterkhwan — Pakistani Restaurant</title>
+  <meta name="description" content="Dasterkhwan (دسترخوان) — تازہ، مزیدار اور معیاری پاکستانی کھانا۔ بریانی، کڑاہی، BBQ اور نان — آن لائن آرڈر کریں اور WhatsApp پر بھیجیں۔">
+  <meta name="theme-color" content="#5a1414">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1682862279256-b2a9e4f3d22c?auto=format&fit=crop&w=1920&q=70">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <header class="nav">
-    <div class="container nav-inner">
-      <a href="#home" class="logo">
-        <span class="logo-en">Dasterkhwan</span>
-        <span class="logo-ur">دسترخوان</span>
+  <!-- ================= HEADER ================= -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="#home" class="logo" aria-label="Dasterkhwan home">
+        <span class="logo-mark" aria-hidden="true">د</span>
+        <span class="logo-text">
+          <span class="logo-ur">دسترخوان</span>
+          <span class="logo-en">Dasterkhwan</span>
+        </span>
       </a>
-      <nav class="nav-links" id="navLinks">
-        <a href="#home" data-i18n="nav_home">Home</a>
-        <a href="#menu" data-i18n="nav_menu">Menu</a>
-        <a href="#about" data-i18n="nav_about">About</a>
-        <a href="#contact" data-i18n="nav_contact">Contact</a>
+
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#menu" class="nav-link">Menu</a>
+        <a href="#about" class="nav-link">About Us</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#menu" class="btn btn-primary nav-order">Order Now</a>
       </nav>
-      <div class="nav-actions">
-        <button class="lang-btn" id="langBtn" aria-label="Switch language">اردو</button>
-        <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+
+      <div class="header-actions">
+        <button class="cart-btn" id="cartBtn" aria-label="Open cart">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1.2 11.1a2 2 0 0 1-2 1.9H9.2a2 2 0 0 1-2-1.9z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg>
+          <span class="cart-count" id="cartCount" hidden>0</span>
+        </button>
+        <a href="#menu" class="btn btn-primary header-order">Order Now</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </header>
 
-  <section class="hero" id="home">
-    <div class="container hero-inner">
-      <p class="eyebrow" data-i18n="hero_eyebrow">Traditional Pakistani Food</p>
-      <h1 data-i18n="hero_title">Food that brings the family together</h1>
-      <p class="hero-text" data-i18n="hero_text">Fresh karahi, biryani, BBQ and naan — cooked daily with desi ghee and homemade masalas.</p>
-      <div class="hero-buttons">
-        <a href="#menu" class="btn btn-primary" data-i18n="hero_cta_menu">View Menu</a>
-        <a href="#contact" class="btn btn-outline" data-i18n="hero_cta_order">Order Now</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="menu">
-    <div class="container">
-      <h2 class="section-title" data-i18n="menu_title">Our Menu</h2>
-      <p class="section-sub" data-i18n="menu_sub">Prices in Pakistani Rupees</p>
-      <div class="tabs" id="menuTabs"></div>
-      <div class="menu-grid" id="menuGrid"></div>
-    </div>
-  </section>
-
-  <section class="section section-alt" id="about">
-    <div class="container about-grid">
-      <div>
-        <h2 class="section-title left" data-i18n="about_title">About Us</h2>
-        <p data-i18n="about_text">Dasterkhwan is a family restaurant serving the real taste of Pakistan. Every dish is made fresh in our kitchen, the way our elders taught us.</p>
-      </div>
-      <div class="features">
-        <div class="feature">
-          <span class="feature-icon">🔥</span>
-          <h3 data-i18n="f1_title">Fresh Daily</h3>
-          <p data-i18n="f1_text">Cooked fresh every day</p>
+  <main>
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="home">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <p class="hero-eyebrow"><span class="ltr">Authentic Pakistani Cuisine</span></p>
+        <h1 class="hero-title">دسترخوان — <span class="accent">ذائقہ جو دل جیت لے</span></h1>
+        <p class="hero-sub">تازہ، مزیدار اور معیاری کھانا — اب آپ کے گھر تک</p>
+        <div class="hero-actions">
+          <a href="#menu" class="btn btn-gold btn-lg"><span class="ltr">Menu</span> دیکھیں</a>
+          <a href="#menu" class="btn btn-ghost btn-lg" data-action="order-now">ابھی آرڈر کریں</a>
         </div>
-        <div class="feature">
-          <span class="feature-icon">🧂</span>
-          <h3 data-i18n="f2_title">Homemade Masala</h3>
-          <p data-i18n="f2_text">Our own spice blends</p>
-        </div>
-        <div class="feature">
-          <span class="feature-icon">👨‍👩‍👧</span>
-          <h3 data-i18n="f3_title">Family Seating</h3>
-          <p data-i18n="f3_text">Comfortable space for families</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="contact">
-    <div class="container contact-grid">
-      <div>
-        <h2 class="section-title left" data-i18n="contact_title">Visit or Order</h2>
-        <ul class="contact-list">
-          <li><strong data-i18n="c_address">Address</strong><span data-i18n="c_address_val">Shahdara, Lahore</span></li>
-          <li><strong data-i18n="c_phone">Phone</strong><a href="tel:+923000000000" dir="ltr">+92 300 0000000</a></li>
-          <li><strong data-i18n="c_hours">Hours</strong><span data-i18n="c_hours_val">Daily: 12:00 PM – 12:00 AM</span></li>
+        <ul class="hero-badges">
+          <li><strong>100%</strong><span>حلال اور تازہ</span></li>
+          <li><strong>30–45</strong><span>منٹ میں ڈیلیوری</span></li>
+          <li><strong>4.8★</strong><span>کسٹمر ریٹنگ</span></li>
         </ul>
-        <a class="btn btn-whatsapp" id="whatsappBtn" href="https://wa.me/923000000000" target="_blank" rel="noopener" data-i18n="c_whatsapp">Order on WhatsApp</a>
       </div>
-      <div class="map-box">
-        <iframe title="Map" loading="lazy"
-          src="https://maps.google.com/maps?q=Shahdara%20Lahore&z=14&output=embed"></iframe>
+    </section>
+
+    <!-- ================= CATEGORIES ================= -->
+    <section class="section categories-section" aria-labelledby="catTitle">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-kicker ltr">Our Categories</span>
+          <h2 class="section-title" id="catTitle">اپنی پسند کا کھانا چنیں</h2>
+          <div class="ornament" aria-hidden="true"><span></span>✦<span></span></div>
+        </div>
+        <div class="category-grid" id="categoryGrid"><!-- rendered by app.js --></div>
+      </div>
+    </section>
+
+    <!-- ================= MENU / POPULAR DISHES ================= -->
+    <section class="section section-alt" id="menu" aria-labelledby="menuTitle">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-kicker ltr" id="menuKicker">Popular Dishes</span>
+          <h2 class="section-title" id="menuTitle">ہماری مقبول ڈشز</h2>
+          <div class="ornament" aria-hidden="true"><span></span>✦<span></span></div>
+        </div>
+        <div class="menu-tabs" id="menuTabs" role="tablist" aria-label="Menu categories"><!-- rendered by app.js --></div>
+        <div class="dish-grid" id="dishGrid" aria-live="polite"><!-- rendered by app.js --></div>
+      </div>
+    </section>
+
+    <!-- ================= WHY CHOOSE US ================= -->
+    <section class="section" id="about" aria-labelledby="whyTitle">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-kicker ltr">Why Choose Dasterkhwan</span>
+          <h2 class="section-title" id="whyTitle">دسترخوان ہی کیوں؟</h2>
+          <div class="ornament" aria-hidden="true"><span></span>✦<span></span></div>
+          <p class="section-desc">دسترخوان ایک فیملی ریسٹورنٹ ہے جو پاکستان کا اصل ذائقہ پیش کرتا ہے — ہر ڈش روزانہ ہمارے کچن میں گھر کے مصالحوں سے تیار ہوتی ہے۔</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3c3 3.5 5 6.3 5 9a5 5 0 0 1-10 0c0-1.4.5-2.7 1.4-4 .3 1.4 1.1 2.3 2.1 2.6C10 8 10.8 5.4 12 3z"/></svg>
+            </div>
+            <h3>تازہ اور معیاری کھانا</h3>
+            <p>روزانہ تازہ گوشت، سبزیاں اور خالص اجزاء</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8z"/><path d="M18.5 14l.8 1.7 1.7.8-1.7.8-.8 1.7-.8-1.7-1.7-.8 1.7-.8z"/><path d="M6 15l.6 1.4L8 17l-1.4.6L6 19l-.6-1.4L4 17l1.4-.6z"/></svg>
+            </div>
+            <h3>صاف ستھرا ماحول</h3>
+            <p>حفظانِ صحت کے اصولوں کے مطابق صاف کچن</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3.5 12.5l8-8H20v8.5l-8 8z"/><circle cx="15.5" cy="8.5" r="1.4"/></svg>
+            </div>
+            <h3>مناسب قیمتیں</h3>
+            <p>بہترین ذائقہ، ہر بجٹ کے مطابق</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/></svg>
+            </div>
+            <h3>تیز اور آسان آرڈر</h3>
+            <p>چند کلکس میں آرڈر، سیدھا WhatsApp پر</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="section section-alt" aria-labelledby="stepsTitle">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-kicker ltr">How Ordering Works</span>
+          <h2 class="section-title" id="stepsTitle">آرڈر کیسے کریں؟</h2>
+          <div class="ornament" aria-hidden="true"><span></span>✦<span></span></div>
+        </div>
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num">1</span>
+            <h3><span class="ltr">Menu</span> دیکھیں</h3>
+            <p>اپنی پسند کا کھانا منتخب کریں۔</p>
+          </li>
+          <li class="step">
+            <span class="step-num">2</span>
+            <h3><span class="ltr">Cart</span> میں شامل کریں</h3>
+            <p><span class="ltr">Quantity</span> منتخب کرکے آرڈر تیار کریں۔</p>
+          </li>
+          <li class="step">
+            <span class="step-num">3</span>
+            <h3><span class="ltr">WhatsApp</span> پر آرڈر بھیجیں</h3>
+            <p><span class="ltr">Order confirmation</span> کے بعد مکمل آرڈر <span class="ltr">WhatsApp</span> پر بھیجیں۔</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= WHATSAPP CTA ================= -->
+    <section class="wa-cta" aria-labelledby="waTitle">
+      <div class="container wa-cta-inner">
+        <div class="wa-cta-text">
+          <h2 id="waTitle">اپنا پسندیدہ کھانا ابھی آرڈر کریں</h2>
+          <p>گرم گرم کھانا، تیز ڈیلیوری — بس ایک میسج کی دوری پر</p>
+        </div>
+        <a class="btn btn-white btn-lg" id="waCtaBtn" href="#" target="_blank" rel="noopener">
+          <svg class="wa-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3z"/></svg>
+          <span><span class="ltr">WhatsApp</span> پر <span class="ltr">Order</span> کریں</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer" id="contact">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo logo-light">
+          <span class="logo-mark" aria-hidden="true">د</span>
+          <span class="logo-text">
+            <span class="logo-ur">دسترخوان</span>
+            <span class="logo-en">Dasterkhwan</span>
+          </span>
+        </a>
+        <p>روایتی پاکستانی ذائقے، جدید انداز میں۔ بریانی، کڑاہی، BBQ اور تندوری نان — ہر روز تازہ، محبت سے تیار۔</p>
+      </div>
+
+      <div>
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Menu</h4>
+        <ul class="footer-links" id="footerCategories"><!-- rendered by app.js --></ul>
+      </div>
+
+      <div>
+        <h4>Contact</h4>
+        <ul class="footer-contact">
+          <li><span class="fc-label">پتہ</span><span data-config="addressUr"></span></li>
+          <li><span class="fc-label">اوقات</span><span data-config="hoursUr"></span></li>
+          <li><span class="fc-label">فون</span><a class="ltr" id="footerPhone" href="#"></a></li>
+          <li><span class="fc-label ltr">WhatsApp</span><a class="ltr wa-link" id="footerWa" href="#" target="_blank" rel="noopener"></a></li>
+        </ul>
       </div>
     </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      <p>© <span id="year"></span> Dasterkhwan · <span data-i18n="footer">All rights reserved</span></p>
+    <div class="footer-bottom">
+      <div class="container">
+        <p class="ltr">© <span id="year"></span> Dasterkhwan | دسترخوان — All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- ================= CART DRAWER ================= -->
+  <div class="drawer-overlay" id="drawerOverlay" hidden></div>
+  <aside class="drawer" id="cartDrawer" aria-labelledby="cartTitle" aria-hidden="true" tabindex="-1">
+    <div class="drawer-head">
+      <h2 id="cartTitle">آپ کا آرڈر <span class="ltr">(Cart)</span></h2>
+      <button class="icon-btn" id="cartClose" aria-label="Close cart">✕</button>
+    </div>
+    <div class="drawer-body" id="cartItems"><!-- rendered by app.js --></div>
+    <div class="drawer-foot" id="cartFoot">
+      <div class="cart-total">
+        <span>کل رقم <span class="ltr">(Total)</span></span>
+        <strong class="ltr" id="cartSubtotal">Rs. 0</strong>
+      </div>
+      <button class="btn btn-whatsapp btn-block btn-lg" id="sendOrderBtn">
+        <span><span class="ltr">WhatsApp</span> پر آرڈر بھیجیں</span>
+      </button>
+      <button class="link-btn" id="clearCartBtn">کارٹ خالی کریں</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Data & logic (order matters) -->
+  <script src="js/config.js"></script>
+  <script src="js/menu-data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/order.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
