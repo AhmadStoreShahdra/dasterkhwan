@@ -27,13 +27,15 @@ Plain HTML / CSS / JavaScript — no build step. Open `index.html` in a browser,
 ## How ordering works now
 
 1. Customer picks a quantity and taps **Add to Cart** (cart is saved in the browser).
-2. The cart drawer (bag icon in the header) lets them change quantities or remove items and shows the total.
-3. **WhatsApp پر آرڈر بھیجیں** opens WhatsApp with the full order: order number (e.g. `DK-261001-4821`), items, quantities, line totals and grand total.
+2. The cart drawer (bag icon in the header) lets them change quantities or remove items and shows the subtotal.
+3. **Checkout** asks for: order type (Delivery / Pickup), name, mobile number, full address (delivery only) and optional notes. Fields are checked before sending (Pakistani mobile like `0300 1234567` or `+92 300 1234567`). Details are remembered in the browser for the next order.
+4. **WhatsApp پر آرڈر بھیجیں** opens WhatsApp with the full order: order number (e.g. `DK-261001-4821`), items, quantities, totals, delivery charge, customer details and notes. A confirmation screen shows the order number and the cart is cleared.
+
+Delivery charge: set `deliveryFee` in `js/config.js` (e.g. `150`). It is added only for Delivery orders; `0` shows "مفت" (free).
 
 ## Ready for the next steps
 
 - **Full menu page:** reuse `DK.menuItems`, `DK.categories` and the dish-card markup in `js/app.js`.
-- **Checkout form (name, phone, address, notes, delivery/pickup):** `DK.order.buildMessage()` already accepts `customer`, `type`, `notes` and `deliveryFee` — pass the form values in `sendOrder()` in `js/app.js`.
 - **Admin panel:** replace `js/menu-data.js` with data loaded from an API or database; the rest of the site only reads `DK.categories` and `DK.menuItems`.
 
 ## Local preview

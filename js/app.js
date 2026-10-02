@@ -106,6 +106,7 @@
 
   function openCart() {
     lastFocus = document.activeElement;
+    if (currentView !== "checkout" || !cart.count()) showView("cart");
     overlay.hidden = false;
     requestAnimationFrame(() => {
       drawer.classList.add("open");
@@ -121,7 +122,10 @@
     overlay.classList.remove("show");
     drawer.setAttribute("aria-hidden", "true");
     document.body.classList.remove("no-scroll");
-    setTimeout(() => { overlay.hidden = true; }, 300);
+    setTimeout(() => {
+      overlay.hidden = true;
+      if (currentView === "done") showView("cart");
+    }, 300);
     if (lastFocus) lastFocus.focus();
   }
 
@@ -164,12 +168,123 @@
       </div>`;
   }
 
-  function sendOrder() {
+  /* ---------- Checkout (cart → form → sent) ---------- */
+  const CUSTOMER_KEY = "dk_customer_v1";
+  const form = $("#checkoutView");
+  const views = { cart: $("#cartView"), checkout: form, done: $("#doneView") };
+  const titles = {
+    cart: `آپ کا آرڈر <span class="ltr">(Cart)</span>`,
+    checkout: `آرڈر کی تفصیل <span class="ltr">(Checkout)</span>`,
+    done: `آرڈر بھیج دیا <span class="ltr">(Sent)</span>`,
+  };
+  let currentView = "cart";
+
+  function showView(name) {
+    currentView = name;
+    Object.entries(views).forEach(([k, el]) => { el.hidden = k !== name; });
+    $("#cartTitle").innerHTML = titles[name];
+    $("#checkoutBack").hidden = name !== "checkout";
+    if (name === "checkout") renderSummary();
+    $(".drawer-body", views[name]).scrollTop = 0;
+  }
+
+  const orderType = () => form.elements.type.value;
+  const deliveryFee = () => (orderType() === "delivery" ? Number(config.deliveryFee) || 0 : 0);
+
+  function renderSummary() {
     const items = cart.items();
-    if (!items.length) return;
-    // Checkout form (name, phone, address, delivery/pickup, notes) plugs in here later.
-    const message = order.buildMessage({ items, orderNumber: order.generateOrderNumber() });
-    window.open(order.whatsappUrl(message), "_blank", "noopener");
+    const subtotal = cart.subtotal();
+    const fee = deliveryFee();
+    const isDelivery = orderType() === "delivery";
+
+    $("#summaryLines").innerHTML = items.map((i) => `
+      <li><span><span class="ltr">${esc(i.name)}</span> × ${i.qty}</span><span class="ltr">${fmt(i.lineTotal)}</span></li>`).join("");
+    $("#sumSubtotal").textContent = fmt(subtotal);
+    $("#sumDeliveryRow").hidden = !isDelivery;
+    $("#sumDelivery").textContent = fee ? fmt(fee) : "مفت";
+    $("#sumTotal").textContent = fmt(subtotal + fee);
+
+    $("#addressField").hidden = !isDelivery;
+    $("#pickupNote").hidden = isDelivery;
+  }
+
+  // Accepts 03001234567, 0300-1234567, +92 300 1234567, 923001234567.
+  function normalizePhone(raw) {
+    const d = String(raw).replace(/[\s\-()]/g, "").replace(/^\+/, "");
+    if (/^03\d{9}$/.test(d)) return d;
+    if (/^923\d{9}$/.test(d)) return `0${d.slice(2)}`;
+    return "";
+  }
+
+  function setError(input, msg) {
+    input.classList.toggle("invalid", !!msg);
+    input.setAttribute("aria-invalid", msg ? "true" : "false");
+    $(`#${input.id}Err`).textContent = msg;
+  }
+
+  function validate() {
+    const { name, phone, address } = form.elements;
+    const checks = [
+      [name, name.value.trim().length >= 2 ? "" : "براہ کرم اپنا نام لکھیں"],
+      [phone, normalizePhone(phone.value) ? "" : "درست موبائل نمبر لکھیں، مثلاً 03001234567"],
+      [address, orderType() !== "delivery" || address.value.trim().length >= 8 ? "" : "براہ کرم مکمل پتہ لکھیں"],
+    ];
+    checks.forEach(([el, msg]) => setError(el, msg));
+    const firstBad = checks.find(([, msg]) => msg);
+    if (firstBad) firstBad[0].focus();
+    return !firstBad;
+  }
+
+  function loadCustomer() {
+    try {
+      const c = JSON.parse(localStorage.getItem(CUSTOMER_KEY) || "{}");
+      ["name", "phone", "address"].forEach((k) => { if (c[k]) form.elements[k].value = c[k]; });
+      if (c.type === "pickup" || c.type === "delivery") form.elements.type.value = c.type;
+    } catch {}
+  }
+
+  function saveCustomer(c) {
+    try { localStorage.setItem(CUSTOMER_KEY, JSON.stringify(c)); } catch {}
+  }
+
+  function goToCheckout() {
+    if (!cart.count()) return;
+    showView("checkout");
+    form.elements.name.focus({ preventScroll: true });
+  }
+
+  function sendOrder(e) {
+    e.preventDefault();
+    const items = cart.items();
+    if (!items.length) { showView("cart"); return; }
+    if (!validate()) return;
+
+    const f = form.elements;
+    const type = orderType();
+    const customer = {
+      name: f.name.value.trim(),
+      phone: normalizePhone(f.phone.value),
+      address: type === "delivery" ? f.address.value.trim() : "",
+    };
+    saveCustomer({ ...customer, address: f.address.value.trim(), type });
+
+    const orderNumber = order.generateOrderNumber();
+    const message = order.buildMessage({
+      items,
+      orderNumber,
+      customer,
+      type: type === "delivery" ? "Delivery (ڈیلیوری)" : "Pickup (خود لے جائیں)",
+      notes: f.notes.value.trim(),
+      deliveryFee: deliveryFee(),
+    });
+    const url = order.whatsappUrl(message);
+    window.open(url, "_blank", "noopener");
+
+    $("#doneNumber").textContent = orderNumber;
+    $("#doneResend").href = url;
+    f.notes.value = "";
+    showView("done");
+    cart.clear();
   }
 
   /* ---------- Toast ---------- */
@@ -229,7 +344,11 @@
   $("#cartBtn").addEventListener("click", openCart);
   $("#cartClose").addEventListener("click", closeCart);
   overlay.addEventListener("click", closeCart);
-  $("#sendOrderBtn").addEventListener("click", sendOrder);
+  $("#checkoutBtn").addEventListener("click", goToCheckout);
+  $("#checkoutBack").addEventListener("click", () => showView("cart"));
+  form.addEventListener("submit", sendOrder);
+  form.addEventListener("change", (e) => { if (e.target.name === "type") renderSummary(); });
+  form.addEventListener("input", (e) => { if (e.target.classList.contains("invalid")) setError(e.target, ""); });
   $("#clearCartBtn").addEventListener("click", () => { cart.clear(); toast("کارٹ خالی کر دیا گیا"); });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") { if (drawer.classList.contains("open")) closeCart(); closeNav(); }
@@ -241,6 +360,10 @@
   });
 
   cart.onChange(renderCart);
+  cart.onChange(() => {
+    if (currentView !== "checkout") return;
+    if (cart.count()) renderSummary(); else showView("cart");
+  });
 
   /* ---------- Header: mobile nav, scroll state, active link ---------- */
   const nav = $("#nav");
@@ -292,4 +415,5 @@
   renderTabs();
   renderDishes();
   renderCart();
+  loadCustomer();
 })();
