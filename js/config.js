@@ -19,6 +19,6 @@ DK.config = {
   hoursEn: "Daily: 12:00 PM – 12:00 AM",
 
   currency: "Rs.",
-  deliveryFee: 0,       // set e.g. 150 when delivery charges apply (used by checkout later)
+  deliveryFee: 0,       // delivery charge added at checkout (0 = free delivery, e.g. 150)
   orderPrefix: "DK",    // order numbers look like DK-261001-4821
 };

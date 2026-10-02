@@ -228,19 +228,106 @@
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
   <aside class="drawer" id="cartDrawer" aria-labelledby="cartTitle" aria-hidden="true" tabindex="-1">
     <div class="drawer-head">
+      <button class="icon-btn" id="checkoutBack" aria-label="Back to cart" hidden>→</button>
       <h2 id="cartTitle">آپ کا آرڈر <span class="ltr">(Cart)</span></h2>
       <button class="icon-btn" id="cartClose" aria-label="Close cart">✕</button>
     </div>
-    <div class="drawer-body" id="cartItems"><!-- rendered by app.js --></div>
-    <div class="drawer-foot" id="cartFoot">
-      <div class="cart-total">
-        <span>کل رقم <span class="ltr">(Total)</span></span>
-        <strong class="ltr" id="cartSubtotal">Rs. 0</strong>
+
+    <!-- Step 1: cart -->
+    <div class="drawer-view" id="cartView">
+      <div class="drawer-body" id="cartItems"><!-- rendered by app.js --></div>
+      <div class="drawer-foot" id="cartFoot">
+        <div class="cart-total">
+          <span>کل رقم <span class="ltr">(Subtotal)</span></span>
+          <strong class="ltr" id="cartSubtotal">Rs. 0</strong>
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" id="checkoutBtn">
+          <span>آگے بڑھیں <span class="ltr">(Checkout)</span></span>
+        </button>
+        <button class="link-btn" id="clearCartBtn">کارٹ خالی کریں</button>
       </div>
-      <button class="btn btn-whatsapp btn-block btn-lg" id="sendOrderBtn">
-        <span><span class="ltr">WhatsApp</span> پر آرڈر بھیجیں</span>
-      </button>
-      <button class="link-btn" id="clearCartBtn">کارٹ خالی کریں</button>
+    </div>
+
+    <!-- Step 2: checkout form -->
+    <form class="drawer-view" id="checkoutView" novalidate hidden>
+      <div class="drawer-body checkout-body">
+        <fieldset class="field">
+          <legend class="field-label">آرڈر کی قسم</legend>
+          <div class="seg" role="radiogroup">
+            <label class="seg-opt">
+              <input type="radio" name="type" value="delivery" checked>
+              <span>🛵 ڈیلیوری <small class="ltr">Delivery</small></span>
+            </label>
+            <label class="seg-opt">
+              <input type="radio" name="type" value="pickup">
+              <span>🏪 خود لے جائیں <small class="ltr">Pickup</small></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label class="field-label" for="coName">نام <span class="req">*</span></label>
+          <input class="input" id="coName" name="name" type="text" autocomplete="name" maxlength="60" required>
+          <p class="field-error" id="coNameErr"></p>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="coPhone">موبائل نمبر <span class="req">*</span></label>
+          <input class="input ltr-input" id="coPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
+            placeholder="03XX XXXXXXX" maxlength="16" required>
+          <p class="field-error" id="coPhoneErr"></p>
+        </div>
+
+        <div class="field" id="addressField">
+          <label class="field-label" for="coAddress">مکمل پتہ <span class="req">*</span></label>
+          <textarea class="input" id="coAddress" name="address" rows="3" autocomplete="street-address" maxlength="250"
+            placeholder="مکان نمبر، گلی، علاقہ، قریبی نشانی"></textarea>
+          <p class="field-error" id="coAddressErr"></p>
+        </div>
+        <p class="pickup-note" id="pickupNote" hidden>
+          آرڈر یہاں سے وصول کریں: <strong data-config="addressUr"></strong>
+        </p>
+
+        <div class="field">
+          <label class="field-label" for="coNotes">خاص ہدایات <span class="muted">(اختیاری)</span></label>
+          <textarea class="input" id="coNotes" name="notes" rows="2" maxlength="250"
+            placeholder="مثلاً: کم مرچ، اضافی رائتہ"></textarea>
+        </div>
+
+        <div class="summary">
+          <h3 class="summary-title">آرڈر کا خلاصہ</h3>
+          <ul class="summary-lines" id="summaryLines"><!-- rendered by app.js --></ul>
+          <div class="summary-row"><span>سب ٹوٹل</span><span class="ltr" id="sumSubtotal"></span></div>
+          <div class="summary-row" id="sumDeliveryRow"><span>ڈیلیوری چارجز</span><span class="ltr" id="sumDelivery"></span></div>
+        </div>
+      </div>
+      <div class="drawer-foot">
+        <div class="cart-total">
+          <span>کل رقم <span class="ltr">(Total)</span></span>
+          <strong class="ltr" id="sumTotal">Rs. 0</strong>
+        </div>
+        <button type="submit" class="btn btn-whatsapp btn-block btn-lg">
+          <span><span class="ltr">WhatsApp</span> پر آرڈر بھیجیں</span>
+        </button>
+        <p class="pay-note">ادائیگی: کیش آن ڈیلیوری / کاؤنٹر پر</p>
+      </div>
+    </form>
+
+    <!-- Step 3: sent -->
+    <div class="drawer-view" id="doneView" hidden>
+      <div class="drawer-body done-body">
+        <div class="done-icon" aria-hidden="true">✓</div>
+        <h3 class="done-title">آپ کا آرڈر تیار ہے!</h3>
+        <p>آرڈر نمبر</p>
+        <p class="done-number ltr" id="doneNumber"></p>
+        <p class="done-text">WhatsApp کھل گیا ہوگا — وہاں <strong>Send</strong> دبائیں تاکہ آرڈر ہم تک پہنچ جائے۔</p>
+        <a class="btn btn-whatsapp btn-block" id="doneResend" href="#" target="_blank" rel="noopener">
+          <span><span class="ltr">WhatsApp</span> دوبارہ کھولیں</span>
+        </a>
+        <button type="button" class="btn btn-primary btn-block" data-close-cart>
+          <span>ٹھیک ہے</span>
+        </button>
+      </div>
     </div>
   </aside>
 
